@@ -1,0 +1,40 @@
+name: BARAH Radar 24H (safe preview)
+on:
+  schedule:
+    # GitHub uses UTC; 02:00 UTC = 05:00 Asia/Riyadh.
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: barah-google-radar-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      # This workflow never commits or publishes generated feeds.
+      RADAR_LIVE_PUBLISH: 'false'
+      SALLA_ACCESS_TOKEN: ${{ secrets.SALLA_ACCESS_TOKEN }}
+      WINDSOR_API_KEY: ${{ secrets.WINDSOR_API_KEY }}
+      ADS_ACCOUNT_ID: '263-442-1631'
+      GA4_ACCOUNT_ID: '499573462'
+      RADAR_EXCLUDED_IDS: ${{ vars.RADAR_EXCLUDED_IDS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check static JavaScript
+        run: node --check scripts/build-radar.mjs
+      - name: Validate data sources and candidate products (dry run)
+        run: node scripts/build-radar.mjs
+      - name: Keep preview private to Actions run (short retention)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: barah-radar-preview
+          path: out/radar-preview.json
+          if-no-files-found: ignore
+          retention-days: 1
