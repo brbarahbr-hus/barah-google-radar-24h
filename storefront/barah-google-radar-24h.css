@@ -1,0 +1,23 @@
+/* BARAH GOOGLE RADAR 24H — independent styles; no selectors outside #barah-google-radar-24h */
+#barah-google-radar-24h {--bgr-orange:#ea672c;--bgr-red:#d94131;direction:rtl;max-width:1220px;width:calc(100% - 32px);margin:24px auto 32px;padding:16px;border:1px solid #f1e6df;border-radius:18px;background:#fffdfb;contain:layout style;box-sizing:border-box;}
+#barah-google-radar-24h *{box-sizing:border-box}
+#barah-google-radar-24h .bgr-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:15px}
+#barah-google-radar-24h .bgr-kicker{font-size:12px;font-weight:800;color:#aa4526;margin:0 0 5px}
+#barah-google-radar-24h .bgr-title{font-size:clamp(19px,2.3vw,27px);line-height:1.45;color:#241d19;font-weight:900;margin:0}
+#barah-google-radar-24h .bgr-description{font-size:12px;line-height:1.75;color:#75675d;margin:7px 0 0}
+#barah-google-radar-24h .bgr-updated{font-size:11px;color:#70675f;white-space:nowrap}
+#barah-google-radar-24h .bgr-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#barah-google-radar-24h .bgr-card{display:flex;flex-direction:column;min-width:0;text-decoration:none!important;background:white;border:1px solid #eee2d9;border-radius:13px;overflow:hidden;color:#26211c!important;box-shadow:0 3px 9px rgba(0,0,0,.025)}
+#barah-google-radar-24h .bgr-card[hidden]{display:none!important}
+#barah-google-radar-24h .bgr-media{width:100%;aspect-ratio:1/1;background:#faf9f7;overflow:hidden}
+#barah-google-radar-24h .bgr-image{width:100%;height:100%;object-fit:contain;display:block}
+#barah-google-radar-24h .bgr-body{padding:11px;display:flex;flex:1;flex-direction:column;gap:7px}
+#barah-google-radar-24h .bgr-category{align-self:start;font-size:10px;color:#a8512a;background:#fff2e9;border-radius:7px;padding:3px 7px}
+#barah-google-radar-24h .bgr-name{font-size:13px;line-height:1.55;min-height:40px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-weight:800}
+#barah-google-radar-24h .bgr-reason{font-size:10px;line-height:1.55;color:#777;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+#barah-google-radar-24h .bgr-cta{margin-top:auto;display:flex;align-items:center;justify-content:center;border-radius:9px;background:linear-gradient(115deg,var(--bgr-orange),var(--bgr-red));color:#fff;font-size:12px;font-weight:800;padding:10px 5px}
+#barah-google-radar-24h .bgr-more{display:block;margin:15px auto 0;background:#fff;border:1px solid #e88a62;border-radius:12px;padding:10px 22px;color:#9d451e;font-size:13px;font-weight:800;cursor:pointer}
+#barah-google-radar-24h .bgr-more[hidden]{display:none!important}
+#barah-google-radar-24h a:focus-visible,#barah-google-radar-24h button:focus-visible{outline:3px solid #f58c4b;outline-offset:3px}
+@media(max-width:767px){#barah-google-radar-24h{width:calc(100% - 24px);margin:16px 12px 23px;padding:11px;border-radius:14px}#barah-google-radar-24h .bgr-heading{flex-direction:column;align-items:start;gap:6px}#barah-google-radar-24h .bgr-updated{white-space:normal}#barah-google-radar-24h .bgr-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#barah-google-radar-24h .bgr-body{padding:9px;gap:6px}#barah-google-radar-24h .bgr-name{font-size:12px;min-height:38px}#barah-google-radar-24h .bgr-cta{font-size:11px}}
+@media(prefers-reduced-motion:reduce){#barah-google-radar-24h *{scroll-behavior:auto}}

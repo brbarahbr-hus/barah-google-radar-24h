@@ -1,8 +1,5 @@
 name: BARAH Radar 24H (safe preview)
 on:
-  schedule:
-    # GitHub uses UTC; 02:00 UTC = 05:00 Asia/Riyadh.
-    - cron: '0 2 * * *'
   workflow_dispatch:
 permissions:
   contents: read

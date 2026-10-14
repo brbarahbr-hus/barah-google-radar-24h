@@ -1,0 +1,71 @@
+name: BARAH radar daily sync
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: barah-radar-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    if: vars.RADAR_SYNC_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    outputs:
+      publish_ready: ${{ steps.sync.outputs.publish_ready }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm test
+      - name: Read sources and validate products
+        id: sync
+        run: npm run sync
+        env:
+          SALLA_ACCESS_TOKEN: ${{ secrets.SALLA_ACCESS_TOKEN }}
+          WINDSOR_API_KEY: ${{ secrets.WINDSOR_API_KEY }}
+          ADS_ACCOUNT_ID: ${{ vars.ADS_ACCOUNT_ID }}
+          ADS_CAMPAIGN_ID: ${{ vars.ADS_CAMPAIGN_ID }}
+          GA4_ACCOUNT_ID: ${{ vars.GA4_ACCOUNT_ID }}
+          EXCLUDED_PRODUCT_IDS: ${{ vars.EXCLUDED_PRODUCT_IDS }}
+          SALLA_PAID_ORDERS_ENABLED: ${{ vars.SALLA_PAID_ORDERS_ENABLED }}
+          RADAR_PUBLISH_ENABLED: ${{ vars.RADAR_PUBLISH_ENABLED }}
+      - name: Save successful live validation count
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add state/validation.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record successful radar source validation'
+            git push origin HEAD:main
+          fi
+      - name: Upload public feed only when publishing is enabled
+        if: steps.sync.outputs.publish_ready == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    if: needs.sync.outputs.publish_ready == 'true'
+    needs: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the validated feed to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
